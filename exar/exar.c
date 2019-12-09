@@ -102,7 +102,8 @@ get_offset(char *buffer, size_t n, const char *path, int *end)
     // strip trailing '/'
     while (tmp[len-1] == '/')
         len--;
-    strncpy(buffer, path, MIN(n, len));
+    strncpy(buffer, path, MIN(n, len)-1);
+    buffer[sizeof(buffer) - 1] = '\0';
 
     // get base name offset
     slash = strrchr(buffer, '/');
@@ -581,11 +582,13 @@ exar_pack(const char *path, const char *outpath)
 
     if (outpath != NULL)
     {
-        strncpy(archive, outpath, sizeof(archive));
+        strncpy(archive, outpath, sizeof(archive) - 1);
+        archive[sizeof(archive) - 1] = '\0';
     }
     else 
     {
-        strncpy(&archive[i], "." EXTENSION, sizeof(archive) - i);
+        strncpy(&archive[i], "." EXTENSION, sizeof(archive) - i - 1);
+        archive[sizeof(archive) - 1] = '\0';
     }
 
     return pack(archive, path, "w");
