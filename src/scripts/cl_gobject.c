@@ -485,7 +485,7 @@ gobject_disconnect(JSContextRef ctx, JSObjectRef function, JSObjectRef this, siz
         return JSValueMakeBoolean(ctx, false);
     }
     int id = JSValueToNumber(ctx, argv[0], exc);
-    if (!isnan(id))
+    if (!isnan((float)id))
     {
         GObject *o = JSObjectGetPrivate(this);
         if (o != NULL && g_signal_handler_is_connected(o, id)) 
